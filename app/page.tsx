@@ -1,8 +1,15 @@
 import Link from "next/link";
+import { calculateConsistency } from "./lib/consistency";
 
 <Link href="/entries/new">
   Add New Entry
 </Link>
+
+const cellStyle = {
+  border: "1px solid #444",
+  padding: "12px",
+  textAlign: "left" as const,
+};
 
 async function getEntries() {
   const response = await fetch(
@@ -28,17 +35,31 @@ async function deleteEntry(id: string) {
   window.location.reload();
 }
 
-const cellStyle = {
-  border: "1px solid #444",
-  padding: "12px",
-  textAlign: "left" as const,
-};
-
 export default async function Home() {
   const entries = await getEntries();
-
+  const stats =
+  calculateConsistency(entries);
 return (
   <main style={{ padding: "20px" }}>
+      <div
+          style={{
+            border: "1px solid #ccc",
+            padding: "20px",
+            marginBottom: "20px",
+          }}
+      >
+      <h2>Consistency Score</h2>
+
+      <p>
+        {stats.activeDays} / {stats.totalDays}
+        days
+      </p>
+
+      <h1>
+        {stats.consistency}%
+      </h1>
+    </div>
+
     <h1>SeedGrowth Dashboard</h1>
     <Link href="/entries/new">
       Add New Entry
