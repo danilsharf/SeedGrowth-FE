@@ -5,10 +5,17 @@ import { calculateConsistency } from "./lib/consistency";
   Add New Entry
 </Link>
 
-const cellStyle = {
+const headerStyle = {
   border: "1px solid #444",
   padding: "12px",
   textAlign: "left" as const,
+};
+
+const dataStyle = {
+  border: "1px solid #444",
+  padding: "12px",
+  textAlign: "left" as const,
+  fontSize: "13px",
 };
 
 async function getEntries() {
@@ -41,7 +48,8 @@ export default async function Home() {
   calculateConsistency(entries);
 return (
   <main style={{ padding: "20px" }}>
-      <div
+    <h1 className="text-x font-bold">SeedGrowth Dashboard</h1>
+     <div
           style={{
             border: "1px solid #ccc",
             padding: "20px",
@@ -59,8 +67,6 @@ return (
         {stats.consistency}%
       </h1>
     </div>
-
-    <h1>SeedGrowth Dashboard</h1>
     <Link href="/entries/new">
       Add New Entry
     </Link>
@@ -73,19 +79,19 @@ return (
     >
       <thead>
         <tr>
-          <th style={cellStyle}>Created</th>
-          <th style={cellStyle}>Entry</th>
+          <th style={headerStyle}>Created</th>
+          <th style={headerStyle}>Entry</th>
         </tr>
       </thead>
 
       <tbody>
         {entries.map((entry: any) => (
           <tr key={entry.id}>
-            <td style={cellStyle}>
+            <td style={dataStyle}>
               {new Date(entry.created_at).toLocaleDateString()}
             </td>
 
-            <td style={cellStyle}>
+            <td style={dataStyle}>
               {entry.raw_text}
             </td>
           </tr>
