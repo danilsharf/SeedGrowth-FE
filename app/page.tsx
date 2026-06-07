@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Image from "next/image";
 
 <Link href="/entries/new">Add New Entry</Link>;
 
@@ -35,7 +36,11 @@ export default async function Home() {
   const stats = calculateConsistency(entries);
   return (
     <main style={{ padding: "20px" }}>
-      <h1 className="text-x text-center font-bold">SeedGrowth Dashboard</h1>
+      <div className="flex items-center justify-center gap-4">
+        <Image src="/logo.png" alt="SeedGrowth Logo" width={60} height={60} />
+        <h1 className="text-xl font-bold">SeedGrowth Dashboard</h1>
+      </div>
+      <br />
       <br />
       <Card className="w-[150px] rounded-3xl shadow-lg p-2">
         <CardHeader>
