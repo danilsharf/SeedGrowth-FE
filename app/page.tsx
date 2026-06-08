@@ -11,32 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Image from "next/image";
-
-async function getEntries() {
-  const response = await fetch("http://127.0.0.1:8000/entries", {
-    cache: "no-store",
-  });
-  console.log("status:", response.status);
-  const text = await response.text();
-  console.log("response:", text);
-  return JSON.parse(text);
-}
-
-async function getGoal() {
-  const response = await fetch("http://127.0.0.1:8000/goals/current", {
-    cache: "no-store",
-  });
-
-  return response.json();
-}
-
-async function deleteEntry(id: string) {
-  await fetch(`http://127.0.0.1:8000/entries/${id}`, {
-    method: "DELETE",
-  });
-
-  window.location.reload();
-}
+import { getEntries, getGoal } from "@/app/lib/api";
 
 export default async function Home() {
   const goal = await getGoal();
@@ -50,6 +25,18 @@ export default async function Home() {
       </div>
       <br />
       <br />
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Current Goal</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <h3 className="font-bold">{goal.title}</h3>
+          <p>{goal.description}</p>
+          <p className="mt-2">Target Date: {goal.end_date}</p>
+          <Link href="/goals">View Goal Overview</Link>
+        </CardContent>
+      </Card>
+
       <Card className="w-[150px] rounded-3xl shadow-lg p-2">
         <CardHeader>
           <CardTitle>Consistency Score</CardTitle>
@@ -73,22 +60,6 @@ export default async function Home() {
         <CardHeader>
           <CardTitle>Recent Entries</CardTitle>
         </CardHeader>
-
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Current Goal</CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <h3 className="font-bold">{goal.title}</h3>
-
-            <p>{goal.description}</p>
-
-            <p className="mt-2">Target Date: {goal.end_date}</p>
-
-            <Link href="/goals">View Goal Overview</Link>
-          </CardContent>
-        </Card>
 
         <CardContent>
           <Table>
