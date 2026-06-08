@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { calculateConsistency } from "./lib/consistency";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -11,8 +12,6 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 
-<Link href="/entries/new">Add New Entry</Link>;
-
 async function getEntries() {
   const response = await fetch("http://127.0.0.1:8000/entries", {
     cache: "no-store",
@@ -21,6 +20,14 @@ async function getEntries() {
   const text = await response.text();
   console.log("response:", text);
   return JSON.parse(text);
+}
+
+async function getGoal() {
+  const response = await fetch("http://127.0.0.1:8000/goals/current", {
+    cache: "no-store",
+  });
+
+  return response.json();
 }
 
 async function deleteEntry(id: string) {
@@ -32,6 +39,7 @@ async function deleteEntry(id: string) {
 }
 
 export default async function Home() {
+  const goal = await getGoal();
   const entries = await getEntries();
   const stats = calculateConsistency(entries);
   return (
@@ -52,11 +60,35 @@ export default async function Home() {
         </CardContent>
       </Card>
       <br />
-      <Link href="/entries/new">Add New Entry</Link>
+      <div className="flex gap-4">
+        <Button asChild>
+          <Link href="/goals">Goal Overview</Link>
+        </Button>
+
+        <Button asChild>
+          <Link href="/entries/new">Add New Entry</Link>
+        </Button>
+      </div>
       <Card className="mt-6">
         <CardHeader>
           <CardTitle>Recent Entries</CardTitle>
         </CardHeader>
+
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Current Goal</CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <h3 className="font-bold">{goal.title}</h3>
+
+            <p>{goal.description}</p>
+
+            <p className="mt-2">Target Date: {goal.end_date}</p>
+
+            <Link href="/goals">View Goal Overview</Link>
+          </CardContent>
+        </Card>
 
         <CardContent>
           <Table>
