@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { getEntries, getGoal } from "@/app/lib/api";
+import SemanticSearch from "@/components/SemanticSearch";
 
 export default async function Home() {
   const goal = await getGoal();
@@ -36,7 +37,6 @@ export default async function Home() {
           <Link href="/goals">View Goal Overview</Link>
         </CardContent>
       </Card>
-
       <Card className="w-[150px] rounded-3xl shadow-lg p-2">
         <CardHeader>
           <CardTitle>Consistency Score</CardTitle>
@@ -49,10 +49,6 @@ export default async function Home() {
       <br />
       <div className="flex gap-4">
         <Button asChild>
-          <Link href="/goals">Goal Overview</Link>
-        </Button>
-
-        <Button asChild>
           <Link href="/entries/new">Add New Entry</Link>
         </Button>
       </div>
@@ -60,7 +56,7 @@ export default async function Home() {
         <CardHeader>
           <CardTitle>Recent Entries</CardTitle>
         </CardHeader>
-
+        <SemanticSearch />
         <CardContent>
           <Table>
             <TableHeader>
